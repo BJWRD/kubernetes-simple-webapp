@@ -1,5 +1,5 @@
 #service-definition.yml
-apiVersion: apps/v1
+apiVersion: v1
 kind: Service
 metadata:
   name: webapp-service
@@ -7,7 +7,8 @@ metadata:
 spec:
     type: NodePort
     ports:
-    - targetPort: http-webapp-svc
+    - port: 8080
+      targetPort: http-webapp-svc
       protocol: TCP
       nodePort: 30080
     selector:
@@ -39,7 +40,7 @@ spec:
       - name: nginx
         image: nginx:latest
         ports:
-        - containerPort: 30080
+        - containerPort: 8080
 ---
 #replicaset-definition.yml
 apiVersion: apps/v1
@@ -67,7 +68,7 @@ spec:
         image: nginx:latest
 ---
 #pod-defintion.yml
-apiVersion: apps/v1
+apiVersion: v1
 kind: Pod
 metadata:
   name: webapp-pod
@@ -80,14 +81,5 @@ spec:
   - name: nginx
     image: nginx:latest
     ports:
-      - containerPort: 30080
+      - containerPort: 8080
         name: http-webapp-svc
----
-#namespace-defintion.yml
-apiVersion: apps/v1
-kind: Namespace
-metadata:
-  name: webapp-namespace
-  labels:
-    app: webapp
-    type: front-end
