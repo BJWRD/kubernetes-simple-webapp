@@ -41,20 +41,39 @@ spec:
         image: nginx:latest
         ports:
         - containerPort: 8080
+          name: http-webapp-svc
+        command:
+        args:
+        volumeMounts:
+          - mountPath: ./app/
+            name: data-volume
+      volumes:
+        - name: data-volume
+          configMap:
+            name: nginx-config
+            items:
+              - key: nginx.conf
+                path: nginx.conf
 ---
-#pod-defintion.yml
+#configmap-definition.yml
 apiVersion: v1
-kind: Pod
+kind: ConfigMap
 metadata:
-  name: webapp-pod
+  name: nginx-config
   namespace: webapp-namespace
   labels:
     app: webapp
     type: front-end
-spec:
-  containers:
-  - name: nginx
-    image: nginx:latest
-    ports:
-      - containerPort: 8080
-        name: http-webapp-svc
+data:
+  nginx.conf: '
+  server {
+    listen       8080;
+    server_name  localhost;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+}
+'
+---
