@@ -1,7 +1,0 @@
-apiVersion: apps/v1
-kind: Namespace
-metadata:
-  name: webapp-namespace
-  labels:
-    app: webapp
-    type: front-end
