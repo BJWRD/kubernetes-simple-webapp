@@ -1,0 +1,93 @@
+#service-definition.yml
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: webapp-service
+  namespace: webapp-namespace
+spec:
+    type: NodePort
+    ports:
+    - targetPort: http-webapp-svc
+      protocol: TCP
+      nodePort: 30080
+    selector:
+      app: webapp
+      type: front-end
+---
+#deployment-definition.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  namespace: webapp-namespace
+  labels:
+    app: webapp
+    type: front-end
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webapp
+      type: front-end
+  template:
+    metadata:
+      labels:
+        app: webapp
+        type: front-end
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 30080
+---
+#replicaset-definition.yml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: webapp-rs
+  namespace: webapp-namespace
+  labels:
+    app: webapp
+    type: front-end
+spec:
+  # modify replicas according to your requirements
+  replicas: 3
+  selector:
+    matchLabels:
+      type: front-end
+  template:
+    metadata:
+      labels:
+        app: webapp
+        type: front-end
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+---
+#pod-defintion.yml
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: webapp-pod
+  namespace: webapp-namespace
+  labels:
+    app: webapp
+    type: front-end
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+      - containerPort: 30080
+        name: http-webapp-svc
+---
+#namespace-defintion.yml
+apiVersion: apps/v1
+kind: Namespace
+metadata:
+  name: webapp-namespace
+  labels:
+    app: webapp
+    type: front-end
