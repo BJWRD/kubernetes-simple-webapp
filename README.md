@@ -1,11 +1,11 @@
 # kubernetes-simple-webapp
 This is a simple web application using K8s, Nginx, HTML and NodePort as a service. 
 
-# Architecture
+## Architecture
 This K8s architecture consists of one Node and three Pods using Deployment, ConfigMap, and the NodePort service for external site accessibility. The Node will reside within the Namespace `webapp-namespace` and the bulk of the configuration can be found within the `kubernetes-simple-webapp-deployment.yml`.
 
 
-# How to Apply/Destroy
+## How to Apply/Destroy
 This section details the deployment and teardown of the kubernetes-simple-webapp architecture. 
 
 ## Prerequisites
@@ -46,7 +46,7 @@ This section details the deployment and teardown of the kubernetes-simple-webapp
 ### 2.  Delete the running minikube instance
      minikube delete
 
-# List of tools/services used
+## List of tools/services used
 * [Minikube](https://minikube.sigs.k8s.io/docs/)
 * [K8s Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 * [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/)
