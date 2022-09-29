@@ -1,9 +1,10 @@
 # kubernetes-simple-webapp
-This is a simple web application using K8s, Nginx, HTML and NodePort as a service. 
+This is a simple web application using [K8s](https://kubernetes.io/), [Nginx](https://docs.nginx.com/), [HTML](https://www.w3schools.com/html) and [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/) as a service. 
 
 ## Architecture
 This K8s architecture consists of one Node and three Pods using Deployment, ConfigMap, and the NodePort service for external site accessibility. The Node will reside within the Namespace `webapp-namespace` and the bulk of the configuration can be found within the `kubernetes-simple-webapp-deployment.yml`.
 
+<img width="690" alt="image" src="https://user-images.githubusercontent.com/83971386/193107498-5da74aa9-64b3-4a70-92a9-c9d438e9866b.png">
 
 ## How to Apply/Destroy
 This section details the deployment and teardown of the kubernetes-simple-webapp architecture. 
@@ -26,16 +27,18 @@ This section details the deployment and teardown of the kubernetes-simple-webapp
 ### 4. Create the bulk of the Kubernetes resources (Deployment, ConfigMap, Service)
      kubectl create -f kubernetes-simple-webapp-deployment.yml
      
-### 5. Verify the Pod's IP addresses
-     kubectl get pod -n webapp-namespace -o wide
+### 5. Verify the Minikube's external IP address and service list
+     minikube ip
+     minikube service list
+<img width="583" alt="image" src="https://user-images.githubusercontent.com/83971386/193108264-210fc8f2-f661-4897-ae40-3f5986fa65ce.png">
 
 ### 6. Test site accessibility
 
-    curl http://localhost:30080
+    curl http://<MinikubeIP>:30080
     
 - Also, try from a web browser specifying the Host's IP Address
 
-      http://<Pod IP>:30080
+      http://<MinikubeIP>:30080
 
 ### Teardown steps
 
