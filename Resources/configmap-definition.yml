@@ -1,3 +1,4 @@
+#configmap-definition.yml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,13 +9,14 @@ metadata:
     type: front-end
 data:
   nginx.conf: '
+  events {
+  }
+  http {
   server {
     listen       8080;
-    server_name  localhost;
-
     location / {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
+      return 200 "Hello world!";
     }
+  }
 }
 '

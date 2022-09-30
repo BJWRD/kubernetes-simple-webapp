@@ -1,7 +1,9 @@
+#deployment-definition.yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webapp-deployment
+  namespace: webapp-namespace
   labels:
     app: webapp
     type: front-end
@@ -9,16 +11,27 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: webapp
-      type: front-end
+     app: webapp
+     type: front-end
   template:
     metadata:
       labels:
         app: webapp
         type: front-end
     spec:
-      containers:
-      - name: nginx
-        image: nginx:latest
-        ports:
-        - containerPort: 8080
+     containers:
+     - name: nginx
+       image: nginx:latest
+       ports:
+       - containerPort: 8080
+         name: http-webapp-svc
+       volumeMounts:
+        - mountPath: /etc/nginx/
+          name: data-volume
+     volumes:
+      - name: data-volume
+        configMap:
+         name: nginx-config
+         items:
+          - key: nginx.conf
+            path: nginx.conf
