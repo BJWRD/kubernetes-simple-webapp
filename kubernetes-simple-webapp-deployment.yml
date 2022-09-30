@@ -28,32 +28,31 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: webapp
-      type: front-end
+     app: webapp
+     type: front-end
   template:
     metadata:
       labels:
         app: webapp
         type: front-end
     spec:
-      containers:
-      - name: nginx
-        image: nginx:latest
-        ports:
-        - containerPort: 8080
-          name: http-webapp-svc
-        command:
-        args:
-        volumeMounts:
-          - mountPath: ./app/
-            name: data-volume
-      volumes:
-        - name: data-volume
-          configMap:
-            name: nginx-config
-            items:
-              - key: nginx.conf
-                path: nginx.conf
+     containers:
+     - name: nginx
+       image: nginx:latest
+       ports:
+       - containerPort: 8080
+         name: http-webapp-svc
+       volumeMounts:
+        - mountPath: /etc/nginx/
+          name: data-volume
+     volumes:
+      - name: data-volume
+        configMap:
+         name: nginx-config
+         items:
+          - key: nginx.conf
+            path: nginx.conf
+
 ---
 #configmap-definition.yml
 apiVersion: v1
@@ -66,14 +65,15 @@ metadata:
     type: front-end
 data:
   nginx.conf: '
+  events {
+  }
+  http {
   server {
     listen       8080;
-    server_name  localhost;
-
     location / {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
+      return 200 "Hello world!";
     }
+  }
 }
 '
 ---
